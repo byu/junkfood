@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{junkfood}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Benjamin Yu"]
-  s.date = %q{2010-09-24}
+  s.date = %q{2010-09-30}
   s.description = %q{My mesh of an all-in-one library for disjoint code.}
   s.email = %q{benjaminlyu@gmail.com}
   s.extra_rdoc_files = [
@@ -33,7 +33,6 @@ Gem::Specification.new do |s|
     "lib/junkfood/adler32_pure.rb",
     "lib/junkfood/assert.rb",
     "lib/junkfood/base32.rb",
-    "lib/junkfood/capistrano/recipes/templates_recipe.rb",
     "lib/junkfood/ceb.rb",
     "lib/junkfood/ceb/base_command.rb",
     "lib/junkfood/ceb/base_event.rb",
