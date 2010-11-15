@@ -12,6 +12,7 @@ group :development do
 
   # Dependencies that this library actually uses during runtime.
   gem 'activesupport', :require => 'active_support/all'
+  gem 'json'
   gem 'mongoid', '~> 2.0.0.beta.18'
   gem 'wrong'
 end

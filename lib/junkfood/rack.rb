@@ -13,18 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-##
-# The Junkfood module is the namespace for all Junkfood components.
-#
 module Junkfood
+
+  ##
+  # The Junkfood::Rack module is the namespace for generic Rack
+  # utilities and middleware.
+  module Rack
+  end
 end
 
-require 'junkfood/adler32'
-require 'junkfood/adler32_pure'
-require 'junkfood/assert'
-require 'junkfood/base32'
-require 'junkfood/ceb'
-require 'junkfood/one_time'
-require 'junkfood/paperclip_string_io'
-require 'junkfood/rack'
-require 'junkfood/settings'
+require 'junkfood/rack/error'
+require 'junkfood/rack/sessions'

@@ -15,6 +15,7 @@ Components
 * CEB - "Command-Event Busing" for Command-Query Responsibility Separation
 * OneTime - HMAC One Time Passwords
 * PaperclipStringIO
+* Rack - Generic middleware for rack applications.
 * Settings
 
 Adler32
@@ -325,6 +326,22 @@ Example:
           :content_type => 'application/pdf'))
     end
 
+Rack
+====
+
+The Rack namespace provides simple generic utilities or middleware
+that may be helpful to applications.
+
+Visit the yardocs for examples and use cases.
+
+The Middleware:
+
+* Junkfood::Rack::ErrorHandler
+* Junkfood::Rack::TransientSession
+
+Requires:
+
+* json
 
 Settings
 ========

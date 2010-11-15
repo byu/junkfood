@@ -29,6 +29,7 @@ Jeweler::Tasks.new do |gem|
   gem.add_development_dependency "rcov", ">= 0"
 
   gem.add_runtime_dependency 'activesupport'
+  gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'mongoid', '~> 2.0.0.beta.18'
   gem.add_runtime_dependency 'wrong'
 end
