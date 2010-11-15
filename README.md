@@ -41,6 +41,10 @@ Example:
     digest = adler32.update 'Wikipedia' #=> 300286872
     adler32.digest #=> 300286872
 
+Requires:
+
+* zlib - unless using the pure implementation
+
 Assert
 ======
 
@@ -100,6 +104,9 @@ String Encodings internally.
       :output => open('out.bin', 'w'))
     io.close
 
+Requires:
+
+* stringio
 
 Command Event Busing (CEB)
 ==========================
@@ -252,6 +259,12 @@ CEB Example
       end
     end
 
+CEB Requirements
+----------------
+* activesupport
+* delayed_job - when using the delayed job executor.
+* mongoid - when using the BaseCommand and BaseEvent classes.
+
 OneTime - HMAC One Time Passwords
 =================================
 
@@ -301,6 +314,11 @@ Example:
     puts one_time.otp! #=> 37359152
     puts one_time.otp! #=> 26969429
 
+Requires:
+
+* openssl
+* wrong
+
 PaperclipStringIO
 =================
 
@@ -326,6 +344,10 @@ Example:
           :content_type => 'application/pdf'))
     end
 
+Requires:
+
+* stringio
+
 Rack
 ====
 
@@ -348,6 +370,10 @@ Settings
 
 A singleton to allow all parts of a Rails application use the same set
 of settings, loaded from the same settings yaml file.
+
+Requires:
+
+* rails
 
 Testing
 =======
