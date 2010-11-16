@@ -33,7 +33,43 @@ describe 'Junkfood::Base32' do
     str1.string.should eql(str2.string)
   end
 
-  it 'should have optional splitlines'
+  it 'should support dash splits at every 10th character' do
+    str = Junkfood::Base32.encode(
+      '1234567890abcdefghijklmnopqrstuvwxyz',
+      :split => :dash,
+      :split_length => 10)
+    str.string.should eql(
+      'GEZDGNBVGY-3TQOJQMFRG-GZDFMZTWQ2-LKNNWG23TP-OBYXE43UOV-3HO6DZPI')
+    str.string.encoding.should eql(Encoding::ASCII)
+  end
 
-  it 'should have splitlines at specified lengths'
+  it 'should support newline splits at every 10th character' do
+    str = Junkfood::Base32.encode(
+      '1234567890abcdefghijklmnopqrstuvwxyz',
+      :split => :newline,
+      :split_length => 10)
+    str.string.should eql(
+      "GEZDGNBVGY\n3TQOJQMFRG\nGZDFMZTWQ2\nLKNNWG23TP\nOBYXE43UOV\n3HO6DZPI")
+    str.string.encoding.should eql(Encoding::ASCII)
+  end
+
+  it 'should support space splits at every 5th character' do
+    str = Junkfood::Base32.encode(
+      '1234567890abcdefgh',
+      :split => :space,
+      :split_length => 5)
+    str.string.should eql(
+      'GEZDG NBVGY 3TQOJ QMFRG GZDFM ZTWQ')
+    str.string.encoding.should eql(Encoding::ASCII)
+  end
+
+  it 'should support underscore splits at every 4th character' do
+    str = Junkfood::Base32.encode(
+      '1234567890abcdefgh',
+      :split => :underscore,
+      :split_length => 4)
+    str.string.should eql(
+      'GEZD_GNBV_GY3T_QOJQ_MFRG_GZDF_MZTW_Q')
+    str.string.encoding.should eql(Encoding::ASCII)
+  end
 end
