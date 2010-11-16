@@ -22,11 +22,45 @@ module Junkfood
     ##
     # BaseCommand abstract class from which one defines and implements
     # actual Commands to be run.
+    # * _id - The mongodb id of the created Command.
+    # * _type - The type of the command. Based off subclass Name.
+    # * created_at - When the event was created/saved to mongodb.
+    # * origin - A descriptive string about where this command originated.
+    #   For example, from the main web application or a separate web service
+    #   api.
     #
-    # _id (id)
-    # _type
-    # created_at
-    # origin
+    # Example:
+    #
+    #   ##
+    #   # This is a simple command that creates a blog post, which is backed
+    #   # by an ActiveRecord based model.
+    #   #
+    #   class Post::CreateCommand < Junkfood::Ceb::BaseCommand
+    #
+    #     def perform
+    #       # The constructor is set to be a Mongoid document constructor,
+    #       # so all of the fields passed become dynamic attributes.
+    #       # We access such attributes with the read_attribute method.
+    #       #
+    #       # The following example reads specific attributes to be passed
+    #       # on to the actual Post model for creation.
+    #       params = {
+    #         'user_id' => read_attribute(:author_id),
+    #         'title' => read_attribute(:title),
+    #         'body' => read_attribute(:body),
+    #       }
+    #       post = Post.new(params)
+    #       # The BaseCommand object is an event_bus, so we can
+    #       # use it to send off events... then return the sent event.
+    #       if post.save
+    #         event, result = send_event :post_created, post
+    #       else
+    #         event, result = send_event :post_failed, post
+    #       end
+    #       return event
+    #     end
+    #   end
+    #
     class BaseCommand
       include Junkfood::Ceb::Bus
       include Mongoid::Document

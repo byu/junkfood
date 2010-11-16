@@ -19,10 +19,27 @@ module Junkfood
   module Ceb
 
     ##
-    # _id (id)
-    # _type
-    # created_at
-    # command_id
+    # The base class from which other classes derive Event modeling.
+    # This is a mongoid document model with the following fields:
+    # * _id - The mongodb id of the created Event.
+    # * _type - The type of the event. Based off subclass Name.
+    # * created_at - When the event was created/saved to mongodb.
+    # * command_id - The command id to which this event was created in response.
+    #
+    # Example:
+    #
+    #   class PostCreatedEvent < Junkfood::Ceb::BaseEvent
+    #     field :post_id, :type => Integer
+    #     field :post_title, :type => String
+    #     field :post_date, :type => DateTime
+    #     field :post_body, :type => String
+    #     field :post_author, :type => String
+    #   end
+    #
+    # Events are meant to state a fact that something occured, and also
+    # the relevant details of that event. In this case, we include all the
+    # details of the Post created.
+    #
     class BaseEvent
       include Mongoid::Document
 
