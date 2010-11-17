@@ -4,6 +4,9 @@ describe 'Junkfood::Rack' do
   describe 'TransientSession' do
 
     it 'should set the rack.session env parameter with an empty hash' do
+      original_env = {
+        'rack.session' => { 'hello' => 'world' }
+      }
       # We manually create a rack application with the TransientSession
       # acting as the only middleware. The application itself is a
       # proc object that just checks that the passed rack environment
@@ -14,7 +17,9 @@ describe 'Junkfood::Rack' do
         env.should eql 'rack.session' => {}
         [200, {}, []]
       }
-      app.call({})
+      app.call(original_env)
+
+      original_env['rack.session'].should eql({'hello' => 'world'})
     end
   end
 end

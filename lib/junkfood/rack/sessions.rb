@@ -52,8 +52,9 @@ module Junkfood
       # @return a Rack response from the application.
       #
       def call(env)
-        env['rack.session'] = {}
-        @app.call(env)
+        new_env = env.dup
+        new_env['rack.session'] = {}
+        @app.call(new_env)
       end
     end
   end
