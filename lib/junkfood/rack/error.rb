@@ -56,7 +56,15 @@ module Junkfood
     class ErrorHandler
       ##
       # The default HTTP status code for caught errors.
-      DEFAULT_STATUS_CODE = 500
+      DEFAULT_STATUS_CODE = 500.freeze
+
+      ##
+      # Header to set the content type of error response
+      CONTENT_TYPE = 'Content-Type'.freeze
+
+      ##
+      # Json's content type value for the content type header.
+      JSON_CONTENT_TYPE = 'application/json'.freeze
 
       ##
       # @param app the rest of the rack stack
@@ -84,7 +92,7 @@ module Junkfood
         
         return [
           map['status_code'] ? map['status_code'].to_i : DEFAULT_STATUS_CODE,
-          { 'Content-Type' => 'application/json' },
+          { CONTENT_TYPE => JSON_CONTENT_TYPE },
           [error.to_json]]
       end
     end
