@@ -22,5 +22,6 @@ module Junkfood
   end
 end
 
+require 'junkfood/rack/chained_router'
 require 'junkfood/rack/error'
 require 'junkfood/rack/sessions'

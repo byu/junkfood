@@ -361,6 +361,11 @@ The Middleware:
 * Junkfood::Rack::ErrorHandler
 * Junkfood::Rack::TransientSession
 
+Application and Middleware
+
+* Junkfood::Rack::ChainRouter - A way to call multiple applications in
+  order until one returns a result without the X-Cascade header set to pass.
+
 Requires:
 
 * json
