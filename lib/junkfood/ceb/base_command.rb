@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'date'
 require 'junkfood/ceb/bus'
 require 'mongoid'
 
@@ -72,7 +73,7 @@ module Junkfood
         :inverse_of => :command,
         :class_name => 'Junkfood::Ceb::BaseEvent')
 
-      field :created_at, :type => Time
+      field :created_at, :type => DateTime
       field :origin, :type => String
 
       after_initialize :generate_default_values
@@ -89,7 +90,7 @@ module Junkfood
       # Before create hook to set the Command's default values.
       #
       def generate_default_values
-        self.created_at = Time.now unless self.created_at
+        self.created_at = DateTime.now unless self.created_at
       end
     end
   end

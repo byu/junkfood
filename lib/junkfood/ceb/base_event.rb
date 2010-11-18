@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'date'
 require 'mongoid'
 
 module Junkfood
@@ -43,7 +44,7 @@ module Junkfood
     class BaseEvent
       include Mongoid::Document
 
-      field :created_at, :type => Time
+      field :created_at, :type => DateTime
 
       referenced_in :command, :class_name => 'Junkfood::Ceb::BaseCommand'
 
@@ -52,7 +53,7 @@ module Junkfood
       protected
 
       def generate_default_values
-        self.created_at = Time.now unless self.created_at
+        self.created_at = DateTime.now unless self.created_at
       end
     end
   end
