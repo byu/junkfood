@@ -96,5 +96,35 @@ describe 'Junkfood::Rack' do
       results = router.call({})
       results.should eql expected_results
     end
+
+    it 'should have good instance_eval DSL (for 0 arity blocks)' do
+      expected_results = [200, {}, ['Hello World']]
+
+      # Create the router
+      app = Proc.new { |env|
+        fail 'Should not be called'
+      }
+      router = Junkfood::Rack::ChainedRouter.new app do
+        # This proc is called, but it returns a pass.
+        add_route Proc.new { |env|
+          [404, { 'X-Cascade' => 'pass' }, []]
+        }
+        # This proc is called, but it also returns a pass.
+        add_route Proc.new { |env|
+          [404, { 'X-Cascade' => 'pass' }, []]
+        }
+        # This proc is called and returns success
+        add_route Proc.new { |env|
+          [200, {}, ['Hello World']]
+        }
+        add_route Proc.new { |env|
+          fail 'Should not be called'
+        }
+      end
+
+      # Execute and test
+      results = router.call({})
+      results.should eql expected_results
+    end
   end
 end

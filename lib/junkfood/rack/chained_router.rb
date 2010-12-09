@@ -42,6 +42,24 @@ module Junkfood
     #     [200, { 'Content-Type' => 'text/plain' }, ['Hello World']]
     #   }
     #
+    # Example as Middleware, without block parameter:
+    #
+    #   use Junkfood::Rack::ChainedRouter do
+    #     add_route Proc.new { |env|
+    #       # This proc is called, but it returns a pass.
+    #       [404, { 'X-Cascade' => 'pass' }, []]
+    #     }
+    #     add_route Proc.new { |env|
+    #       # This proc is called, but it also returns a pass.
+    #       [404, { 'X-Cascade' => 'pass' }, []]
+    #     }
+    #   end
+    #   run Proc.new { |env|
+    #     # The main app is the last callable in ChainRouter's list.
+    #     # And this will be executed.
+    #     [200, { 'Content-Type' => 'text/plain' }, ['Hello World']]
+    #   }
+    #
     # Example as Application:
     #
     #   run Junkfood::Rack::ChainedRouter.new do |router|
@@ -79,13 +97,18 @@ module Junkfood
 
       ##
       # @param app the rack application. This will be last callable in chain.
-      # @yield [router] block to configure the ChainedRouter.
+      # @yield [router] block to configure the ChainedRouter if
+      #   block arity greater than 0.
       # @yieldparam router newly instantiated ChainedRouter
       #
       def initialize(app=nil, &block)
         @chain = []
         if block_given?
-          yield self
+          if block.arity == 0
+            instance_eval &block
+          else
+            yield self
+          end
         end
         @chain << app if app.respond_to? :call
 
