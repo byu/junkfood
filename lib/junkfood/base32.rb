@@ -67,6 +67,34 @@ module Junkfood
     }.freeze
 
     ##
+    # Base32 encodes the input object and returns the encoded string.
+    #
+    # @param input [#each_byte]
+    # @option options [String] :split :dash, :newline, :space, or :underscore
+    # @option options [Fixnum] :split_length (79) number of Base32 characters
+    #   before inserting a split character.
+    # @option options [Boolean] :omit_pad (false) omit the trailing pad (=)
+    #   characters from the end of output.
+    # @return String the encoded data.
+    # @see Base32.stream_encode
+    #
+    def self.encode(input, options={})
+      stream_encode(input, options.merge(:output => nil)).string
+    end
+
+    ##
+    # Base32 decodes the input object and returns the decoded data.
+    #
+    # @param input [#each_byte]
+    # @return String the decoded data.
+    # @raise Base32DecodeError
+    # @see Base32.stream_decode
+    #
+    def self.decode(input, options={})
+      stream_decode(input, options.merge(:output => nil)).string
+    end
+
+    ##
     # Base32 encodes the input object and writes to the output io object.
     #
     # @param input [#each_byte]
@@ -78,7 +106,7 @@ module Junkfood
     #   characters from the end of output.
     # @return IO, StringIO instance of object to which encoded data was written.
     #
-    def self.encode(input, options={})
+    def self.stream_encode(input, options={})
       output = options[:output] || StringIO.new(''.force_encoding('US-ASCII'))
       alphabet = options[:use_downcase] ? ALPHABET_DOWNCASE : ALPHABET
       write_pad = options[:omit_pad] ? false : true
@@ -179,7 +207,7 @@ module Junkfood
     # @return IO, StringIO instance of object to which decoded data was written.
     # @raise Base32DecodeError
     #
-    def self.decode(input, options={})
+    def self.stream_decode(input, options={})
       output = options[:output] || StringIO.new(''.force_encoding('BINARY'))
       buffer = 0
       bits_left = 0
