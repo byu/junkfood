@@ -37,6 +37,7 @@ module Junkfood
     # The Base32 alphabet, all lowercase.
     ALPHABET_DOWNCASE = ALPHABET.downcase
     ALPHABET_DOWNCASE.freeze
+    PAD = ['', '======', '====', '===', '='].freeze
 
     # Once populated, this is Base32 alphabet to byte mapping.
     BYTE_MAP = {}
@@ -48,6 +49,8 @@ module Junkfood
     BYTE_MAP['1'.getbyte(0)] = BYTE_MAP['I'.getbyte(0)]
     BYTE_MAP['0'.getbyte(0)] = BYTE_MAP['O'.getbyte(0)]
     BYTE_MAP.freeze
+
+    PAD_BYTE = '='.getbyte(0).freeze
 
     # Spacer characters to ignore when parsing a Base32 encoded string.
     IGNORED = "\r\n-_\s".bytes.to_a
@@ -71,11 +74,14 @@ module Junkfood
     # @option options [String] :split :dash, :newline, :space, or :underscore
     # @option options [Fixnum] :split_length (79) number of Base32 characters
     #   before inserting a split character.
+    # @option options [Boolean] :omit_pad (false) omit the trailing pad (=)
+    #   characters from the end of output.
     # @return IO, StringIO instance of object to which encoded data was written.
     #
     def self.encode(input, options={})
       output = options[:output] || StringIO.new(''.force_encoding('US-ASCII'))
       alphabet = options[:use_downcase] ? ALPHABET_DOWNCASE : ALPHABET
+      write_pad = options[:omit_pad] ? false : true
 
       split = SPLITS[options[:split]]
       split_length = options[:split_length] || 79
@@ -159,6 +165,7 @@ module Junkfood
         # 2 bits in buffer
         write.call(buffer << 3)
       end
+      output.write PAD[position] if write_pad
 
       return output
     end
@@ -177,6 +184,7 @@ module Junkfood
       buffer = 0
       bits_left = 0
       input.each_byte do |byte|
+        break if byte == PAD_BYTE
         next if IGNORED.include? byte
         raise Base32DecodeError.new("Invalid input byte: #{byte}") unless(
           BYTE_MAP.key? byte)
